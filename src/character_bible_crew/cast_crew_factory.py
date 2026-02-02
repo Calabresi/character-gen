@@ -38,7 +38,7 @@ CAST:
 
 {CAST_VOICE_MATRIX_PROMPT}
 """,
-        expected_output="YAML",
+        expected_output="JSON",
         agent=agent,
     )
 
