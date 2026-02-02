@@ -95,9 +95,9 @@ You will receive:
 - Plot facts
 - Character brief
 - Differentiation signature
-- Outer layer YAML
-- Flesh YAML
-- Core YAML
+- Outer layer JSON
+- Flesh JSON
+- Core JSON
 - Devil's advocate notes
 
 Task:
