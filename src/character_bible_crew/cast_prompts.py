@@ -5,7 +5,7 @@ Hard constraints:
 - Prevent voice convergence across the cast.
 - Avoid author-default phrasing.
 - Each character must have a distinct social mask + rhetorical habits.
-Output must be YAML only. No backticks.
+Output must be JSON only. No backticks.
 """
 
 CAST_VOICE_MATRIX_PROMPT = """Given the plot and the cast list, produce a CAST VOICE MATRIX.
@@ -25,7 +25,7 @@ Rules:
 - No two characters may share more than 30% overlap in banned_phrases or metaphor bans.
 - If two characters are similar by role, differentiate via worldview and social mask.
 
-Return YAML with keys:
+Return JSON with keys:
 - global_banned_habits
 - characters (mapping slug -> voice_constraints object)
 """
