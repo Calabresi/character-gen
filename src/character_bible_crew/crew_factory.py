@@ -17,13 +17,10 @@ from .prompts import (
 )
 
 def _make_agent(role: str, goal: str, backstory: str, llm_kwargs: dict) -> Agent:
-    # CrewAI versions differ in LLM plumbing. Many accept `llm=...` where ... can be a string or config.
-    # We'll pass a dict; if your version wants a string, swap llm=llm_kwargs["provider_model"].
     ollama_llm = LLM(
-        model="ollama/llama3",
-        base_url="http://localhost:11434",
+        model='ollama/llama3.2',
+        base_url='http://localhost:11434',
     )
-
 
     return Agent(
         role=role,
@@ -40,6 +37,10 @@ def build_character_crew(plot: str, roster_context: str, character: dict, cast_v
 
     llm_cfg = get_llm_config()
 
+    # Guarantee we always have a usable dict, even if caller passed None
+    if cast_voice_matrix is None:
+        cast_voice_matrix = {"global_banned_habits": [], "characters": {}}
+
     name = character["name"]
     role = character.get("role", "")
     brief = character.get("brief", "")
@@ -47,7 +48,6 @@ def build_character_crew(plot: str, roster_context: str, character: dict, cast_v
     orientation = character.get("orientation", {})
     slug = character["slug"]
     voice_for_this = cast_voice_matrix.get("characters", {}).get(slug, {})
-    global_bans = cast_voice_matrix.get("global_banned_habits", [])
 
     # Agents
     differentiator = _make_agent(
@@ -87,7 +87,7 @@ def build_character_crew(plot: str, roster_context: str, character: dict, cast_v
 
     finalizer = _make_agent(
         role="Showrunner / Finalizer",
-        goal="Merge outputs into one Reedsy-structured YAML; resolve conflicts; preserve canon.",
+        goal="Merge outputs into one Reedsy-structured JSON; resolve conflicts; preserve canon.",
         backstory="You enforce plot truth and continuity across the cast.",
         llm_kwargs=llm_cfg,
     )
@@ -165,7 +165,7 @@ TARGET CHARACTER:
     t_final = Task(
         name="finalizer",
         description=base_context
-        + "\n\nMerge EVERYTHING into final YAML.\n\n"
+        + "\n\nMerge EVERYTHING into final JSON.\n\n"
         + FINALIZER_PROMPT,
         expected_output="JSON",
         agent=finalizer,
