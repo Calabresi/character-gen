@@ -140,6 +140,25 @@ TEMPLATE = Template(
 {% for b in p.clone_risks_and_fixes -%}
 - {{ b }}
 {% endfor %}
+{% if p.notes and p.notes.stress_test_snippets is defined and p.notes.stress_test_snippets %}
+## Stress-Test Snippets
+*Proof-of-life: how this character sounds under pressure.*
+{% for item in p.notes.stress_test_snippets %}
+### Scenario
+{{ item.scenario }}
+
+```
+{{ item.snippet }}
+```
+{% endfor %}
+{% endif %}
+{% if p.notes and p.notes.dropped_fields is defined and p.notes.dropped_fields %}
+## Provenance: Dropped Fields
+*These sections failed schema validation and were set aside rather than blocking the character.*
+{% for key, value in p.notes.dropped_fields.items() %}
+- **{{ key }}** — removed; raw value preserved in `character.json` under `notes.dropped_fields`
+{% endfor %}
+{% endif %}
 
 """
 )
