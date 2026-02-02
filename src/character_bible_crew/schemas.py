@@ -172,9 +172,9 @@ class CharacterReedsyProfile(BaseModel):
     orientation: Optional[Orientation] = None
     physical_appearance: PhysicalAppearance = Field(default_factory=PhysicalAppearance)
     speech_and_communication: SpeechCommunication = Field(default_factory=SpeechCommunication)
-    voice_constraints: Optional[Dict[str, List[str]]] = Field(
+    voice_constraints: Optional[Dict[str, Any]] = Field(
         default=None,
-        description="Cast-level voice matrix for this character. Keys like: do, avoid, banned_phrases, banned_metaphor_domains, syntax_rules."
+        description="Cast-level voice matrix for this character. Keys like: do, avoid, banned_phrases, banned_metaphor_domains, syntax_rules, social_mask."
     )
     past: PastEducationJobs = Field(default_factory=PastEducationJobs)
     family: FamilySection = Field(default_factory=FamilySection)
